@@ -1,0 +1,42 @@
+--- captureMicrosatelliteEvents_orig.py	2020-05-07 13:56:26.000000000 +0100
++++ captureMicrosatelliteEvents.py	2020-05-07 14:20:45.000000000 +0100
+@@ -45,9 +45,9 @@
+             break
+     leftPos = pos
+     if elementNum > 1:
+-        return True, leftPos, rightPos, delStr, elementNum
++        return [True, leftPos, rightPos, delStr, elementNum]
+     else:
+-        return False
++        return [False]
+ 
+ 
+ def findMismatch(ref, reads, leftPos, rightPos, minAllefrc=0.2):
+@@ -137,6 +137,7 @@
+         reads = [readinfo.split("\t")[0] for readinfo in RecordInfo[3:]]
+         label, direction, NT = findMismatch(ref, reads, leftPos=leftPos, rightPos=rightPos)
+         if label:
++            newReads = []
+             ref = ref.upper()
+             if direction == "left":
+                 BPStart = BPStart - len(NT)
+@@ -220,8 +221,8 @@
+     ############# Processing every record in pindel deletion  #################
+     for line in open(path_output_D_tmp):
+         if "####" in line:
+-            if len(tmpRecordInfo) == 0:
+                 recordNum += 1
++            if len(tmpRecordInfo) == 0:
+                 tmpRecordInfo.append(line)
+             else:
+                 processingRecord(tmpRecordInfo, recordNum)
+@@ -238,8 +239,8 @@
+     tmpRecordInfo = []
+     for line in open(path_output_DI_tmp):
+         if "####" in line:
+-            if len(tmpRecordInfo) == 0:
+                 recordNum += 1
++            if len(tmpRecordInfo) == 0:
+                 tmpRecordInfo.append(line)
+             else:
+                 thisChrID = tmpRecordInfo[1].split("\t")[3].split(" ")[1]
